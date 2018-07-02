@@ -27,7 +27,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && ln -sf /dev/stderr /var/log/php7.0-fpm.log \
     && apt-get remove --purge -y php7.0-dev && apt-get autoremove -y
 
-RUN echo '* * * * * root php /var/www/app/artisan schedule:run >> /var/www/app/storage/logs/jobs.log 2>&1' > /etc/crontab \
+RUN install_packages ca-certificates openssl \
+    && echo '* * * * * root php /var/www/app/artisan schedule:run >> /var/www/app/storage/logs/jobs.log 2>&1' > /etc/crontab \
     && service cron start \
     && service cron reload
 
