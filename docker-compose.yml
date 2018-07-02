@@ -1,0 +1,63 @@
+version: '3.5'
+services:
+  api:
+    build:
+      context: ./.docker/php/7.0
+      dockerfile: Dockerfile
+    image: davibusanello/php:7.0-fpm-laravel
+    container_name: php7-fpm-api
+    tty: true
+    restart: always
+    # ports:
+      # - "9009:9009" # xdebug port
+      # - "9000:9000" # php-fpm
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    extra_hosts:
+      - "dbhost:10.222.31.80"
+    environment:
+      APPLICATION_ENV: development
+      XDEBUG_CONFIG: remote_host=172.17.0.1 # ip do host do docker/maquina local
+      PHP_IDE_CONFIG: "serverName=application"
+    volumes:
+      - $HOME/.composer:/root/.composer #Common path to composer, if have another change the volume origin to the container make use of your composer cache
+      - ./api:/var/www/app # App
+      - .env:/var/www/app/.env
+      - ./.docker/services-config/fixed/php.ini:/etc/php/7.0/fpm/php.ini # Config
+      - ./.docker/php/7.0/lite_php_browscap.ini:/var/lite_php_browscap.ini # PHP Browscap
+    working_dir: /var/www/app
+  apache:
+    build:
+      context: ./.docker/apache2
+      dockerfile: Dockerfile
+    image: apache2
+    tty: true
+    restart: always
+    ports: # portas do vhost (host:container)
+      - "80:80"
+      # - "443:443"
+    links:
+      - api
+    depends_on:
+      - api
+    environment:
+      APPLICATION_ENV: development
+    volumes:
+      - ./api:/var/www/app
+      - ./.docker/services-config/apache-vhost:/etc/apache2/sites-enabled # Config
+  mysql:
+    image: mysql:5.7
+    env_file: .env
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+        - "3306:3306"
+volumes:
+  mysql-data:
