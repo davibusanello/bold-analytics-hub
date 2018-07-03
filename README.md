@@ -2,6 +2,7 @@
 
 This repository is just a hub to provide an environment for the project of the challenge, they are divided into 2 more repositories using git submodules
 
+- [Bold Commerce - Code Challenge Reference](https://github.com/bold-commerce/review-syncer)
 - [Backend](https://github.com/davibusanello/bold-analytics-api): api & job using (php, laravel, mysql)
 - [Frontend](https://github.com/davibusanello/bold-analytics-app): SPA using Vue.js
 
