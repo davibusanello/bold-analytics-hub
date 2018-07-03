@@ -28,6 +28,8 @@ This repository is just a hub to provide an environment for the project of the c
 - $ `docker-compose build`
 - $ `docker-compose up`  Use `-d` if wanna run in background and don't wanna see the log output.
 - $ `docker-compose exec api composer install` It will install the php packages required
+- $ `docker-compose exec api php artisan migrate:fresh` It will run migrations in the database
+- $ `docker-compose exec api php artisan shopify:review-sync` (optional) For manually sync the reviews (Job is running every 30 minutes)
 - Access: [http://localhost](http://localhost) If you haven't changed any ports map in docker-compose.yml
 
 ## How to completely clean the docker environment when you have finished
