@@ -1,1 +1,6 @@
-[submodule "api"] path = api url = https://github.com/davibusanello/bold-analytics-api [submodule "app"] path = app url = https://github.com/davibusanello/bold-analytics-app
+[submodule "api"]
+ path = api
+ url = https://github.com/davibusanello/bold-analytics-api
+[submodule "app"]
+ path = app
+ url = https://github.com/davibusanello/bold-analytics-app
